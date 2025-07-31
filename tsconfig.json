@@ -1,15 +1,17 @@
 {
-    "compilerOptions": {
-        "outDir": "./dist",
-        "rootDir": "./src",
-        "lib": ["esnext"],
-        "target": "ESNext",
-        "moduleResolution": "NodeNext",
-        "module": "NodeNext",
-        "strict": false,
-        "sourceMap": true,
-        "esModuleInterop": true,
-        "declaration": true
-    },
-    "include": ["src/**/*.ts"]
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "lib": ["esnext"],
+    "target": "ES2022",               // o ESNext (pero mejor ES2022 para decoradores)
+    "moduleResolution": "NodeNext",
+    "module": "NodeNext",
+    "strict": false,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "declaration": true,
+    "experimentalDecorators": true,   // ✅ Necesario para usar decoradores
+    "emitDecoratorMetadata": true     // ✅ Necesario para Sequelize-TypeScript
+  },
+  "include": ["src/**/*.ts"]
 }
