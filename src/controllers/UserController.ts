@@ -1,6 +1,6 @@
 import { Request, Response} from 'express'
 import User from '../models/User'
-import { hashPassword } from '../utils/hashPassword'
+import { comparePassword, hashPassword } from '../utils/hashPassword'
 
 export class UserController {
     
@@ -40,21 +40,23 @@ export class UserController {
 
             if(!user) {
                 const error = new Error('Usuario no encontrado')
-                res.status(404).json({error : error.message})
+                res.status(403).json({error : error.message})
                 return
             }
 
-            const isPasswordCorrect = 
+            const isPasswordCorrect = await comparePassword(password, user.password)
 
-            
-
+            if(!isPasswordCorrect) {
+                const error = new Error('Password Incorrect')
+                res.status(401).json({error : error.message})
+                return
+            }
+            res.json('Cuenta Autenticada Correctamente')
 
         } catch (error) {
             console.log(error)
             res.status(500).json({error : 'Hubo un error'})
         }
-
-
     }
 
 

@@ -42,6 +42,12 @@ class Veterinario extends Model {
         type :  DataType.STRING(30)
     })
     declare email : string
+
+    @AllowNull(false)
+    @Column({
+        type :  DataType.STRING(60)
+    })
+    declare password : string
 }
 
 export default Veterinario
