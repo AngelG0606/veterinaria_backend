@@ -4,6 +4,7 @@ import {body, param} from 'express-validator'
 import { handleInputErrors } from '../middleware/validation'
 import { authenticateUser } from '../middleware/authenticateUser'
 import { MascotaController } from '../controllers/MascotaController'
+import { CitaController } from '../controllers/CitaController'
 
 const router = Router()
 
@@ -95,6 +96,33 @@ router.delete('/pets/:petId',
     authenticateUser,
     param('petId').isInt().withMessage('ID no válido').custom(value => value > 0 ).withMessage('ID no válido'),
     MascotaController.deletePet
+)
+
+
+//Route for citas
+
+router.get('/citas',
+    CitaController.getCitas
+)
+
+router.get('/citas/:citaId', 
+    CitaController.getCitaById
+)
+
+router.post('/citas', 
+    CitaController.createCita
+)
+
+router.put('/citas/:citaId',
+    CitaController.updateCita
+)
+
+router.delete('/citas/:citaId',
+    CitaController.deleteCita
+)
+
+router.post('/citas/:citaId',
+    CitaController.cancelCita
 )
 
 export default router

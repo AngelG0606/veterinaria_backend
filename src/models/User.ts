@@ -1,5 +1,6 @@
 import { Table, Column, Model, DataType, AllowNull, Unique, HasMany } from 'sequelize-typescript';
 import Mascota from './Mascota';
+import Cita from './Citas';
 
 @Table({
   tableName: 'users',
@@ -47,6 +48,12 @@ class User extends Model {
     onUpdate : 'CASCADE'
   })
   declare mascotas : Mascota[]
+
+  @HasMany(() => Cita, {
+    onDelete : 'CASCADE',
+    onUpdate : 'CASCADE'
+  })
+  declare citas : Cita[]
 
 }
 
