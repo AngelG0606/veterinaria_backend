@@ -24,7 +24,7 @@ class User extends Model {
   })
   declare telefono: string;
 
-  @Unique
+  @Unique(true)
   @AllowNull(false)
   @Column({
     type: DataType.STRING(30),

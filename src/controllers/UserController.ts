@@ -86,6 +86,15 @@ export class UserController {
     }
 
     static editUser = async (req : Request, res : Response) => {
+        const {email } = req.body
+
+        const userExist = await User.findOne({where : {email}})
+        if(userExist && userExist.id !== req.user.id) {
+            const error = new Error('Email ya registrado')
+            res.status(409).json({error : error.message})
+            return
+        }
+
         try {
             const { userId } = req.params
             const user = await User.findByPk(userId)
@@ -136,7 +145,7 @@ export class UserController {
                 return
             }
             const {} = req.body
-            
+
 
         } catch (error) {
             console.log(error)

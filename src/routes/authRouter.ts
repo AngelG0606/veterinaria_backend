@@ -3,6 +3,7 @@ import { UserController } from '../controllers/UserController'
 import {body, param} from 'express-validator'
 import { handleInputErrors } from '../middleware/validation'
 import { authenticateUser } from '../middleware/authenticateUser'
+import { MascotaController } from '../controllers/MascotaController'
 
 const router = Router()
 
@@ -51,6 +52,49 @@ router.put('/user/:userId',
     body('email').isEmail().withMessage('E-mail no válido'),
     handleInputErrors,
     UserController.editUser
+)
+
+
+//Routes for pets
+router.post('/pets/:userId',
+    authenticateUser,
+    param('userId').isInt().withMessage('ID no válido').custom(value => value > 0 ).withMessage('ID no válido'),
+    body('name').notEmpty().withMessage('El nombre de la mascota es obligatorio'), 
+    body('especie').notEmpty().withMessage('La especie de la mascota es obligatorio'), 
+    body('raza').notEmpty().withMessage('La raza de la mascota es obligatorio'), 
+    body('color').notEmpty().withMessage('El color de la mascota es obligatorio'), 
+    body('weight').notEmpty().withMessage('El peso de la mascota es obligatorio'),
+    handleInputErrors,
+    MascotaController.createPet
+)
+
+router.get('/pets',
+    authenticateUser,
+    MascotaController.getPets
+)
+
+router.get('/pets/:petId',
+    authenticateUser,
+    param('petId').isInt().withMessage('ID no válido').custom(value => value > 0 ).withMessage('ID no válido'),
+    MascotaController.getPetById
+)
+
+router.put('/pets/:petId',
+    authenticateUser,
+    param('petId').isInt().withMessage('ID no válido').custom(value => value > 0 ).withMessage('ID no válido'),
+    body('name').notEmpty().withMessage('El nombre de la mascota es obligatorio'), 
+    body('especie').notEmpty().withMessage('La especie de la mascota es obligatorio'), 
+    body('raza').notEmpty().withMessage('La raza de la mascota es obligatorio'), 
+    body('color').notEmpty().withMessage('El color de la mascota es obligatorio'), 
+    body('weight').notEmpty().withMessage('El peso de la mascota es obligatorio'),
+    handleInputErrors,
+    MascotaController.updatePet
+)
+
+router.delete('/pets/:petId',
+    authenticateUser,
+    param('petId').isInt().withMessage('ID no válido').custom(value => value > 0 ).withMessage('ID no válido'),
+    MascotaController.deletePet
 )
 
 export default router
