@@ -101,10 +101,12 @@ router.delete('/pets/:petId',
 
 //Route for citas
 router.get('/citas',
+    authenticateUser,
     CitaController.getCitas
 )
 
-router.get('/citas/:citaId', 
+router.get('/citas/:citaId',
+    authenticateUser, 
     CitaController.getCitaById
 )
 
@@ -134,6 +136,8 @@ router.delete('/citas/:citaId',
 )
 
 router.post('/citas/:citaId',
+    authenticateUser,
+    body('status').isBoolean().withMessage('Valor no valido'),
     CitaController.cancelCita
 )
 
