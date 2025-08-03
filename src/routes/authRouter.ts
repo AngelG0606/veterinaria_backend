@@ -100,7 +100,6 @@ router.delete('/pets/:petId',
 
 
 //Route for citas
-
 router.get('/citas',
     CitaController.getCitas
 )
@@ -109,15 +108,28 @@ router.get('/citas/:citaId',
     CitaController.getCitaById
 )
 
-router.post('/citas', 
+router.post('/citas/:userId/:veterinarioId/:mascotaId',
+    authenticateUser,
+    body('fecha').notEmpty().withMessage('La fecha es obligatoria').isDate().withMessage('Fecha no válida'), 
+    body('hora').notEmpty().withMessage('La hora es obligatoria'),
+    param('userId').isInt().withMessage('ID no válido').custom(value => value > 0 ).withMessage('ID no válido'),
+    param('mascotaId').isInt().withMessage('ID no válido').custom(value => value > 0 ).withMessage('ID no válido'),
+    handleInputErrors,
     CitaController.createCita
 )
 
 router.put('/citas/:citaId',
+    authenticateUser,
+    param('citaId').isInt().withMessage('ID no válido').custom(value => value > 0 ).withMessage('ID no válido'),
+    body('fecha').notEmpty().withMessage('La fecha es obligatoria').isDate().withMessage('Fecha no válida'), 
+    body('hora').notEmpty().withMessage('La hora es obligatoria'),
+    handleInputErrors,
     CitaController.updateCita
 )
 
 router.delete('/citas/:citaId',
+    authenticateUser,
+    param('citaId').isInt().withMessage('ID no válido').custom(value => value > 0 ).withMessage('ID no válido'),
     CitaController.deleteCita
 )
 

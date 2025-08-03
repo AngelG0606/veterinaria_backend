@@ -1,5 +1,6 @@
-import { Table, Column, Model, DataType, AllowNull, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, AllowNull, ForeignKey, BelongsTo, HasMany } from 'sequelize-typescript';
 import User from './User';
+import Cita from './Citas';
 
 
 @Table({
@@ -43,6 +44,12 @@ class Mascota extends Model {
 
     @BelongsTo(() => User)
     declare owner : User
+
+    @HasMany(() => Cita,{
+        onDelete : 'CASCADE',
+        onUpdate : 'CASCADE'
+    })
+    declare citas : Cita[]
 
 }
 

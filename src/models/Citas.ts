@@ -1,6 +1,7 @@
 import { Table, Column, Model, DataType, AllowNull, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import User from './User';
 import Veterinario from './Veterinario';
+import Mascota from './Mascota';
 
 @Table({
     tableName : 'citas'
@@ -44,6 +45,11 @@ class Cita extends Model {
     @BelongsTo(() => Veterinario)
     declare veterinario : Veterinario
 
+    @ForeignKey(() => Mascota)
+    declare mascotaId : Mascota
+
+    @BelongsTo(() => Mascota)
+    declare mascota : Mascota
 
 }
 
