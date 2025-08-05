@@ -4,6 +4,8 @@ import { db } from './config/db'
 import colors from  'colors'
 import authRouter from './routes/authRouter'
 import vetRouter from './routes/vetRouter'
+import cors from 'cors'
+import { corsConfig } from './config/cors'
 
 async function connectDB() {
     try {
@@ -19,6 +21,8 @@ async function connectDB() {
 connectDB()
 
 const app = express()
+
+app.use(cors(corsConfig))
 
 app.use(morgan('dev'))
 
