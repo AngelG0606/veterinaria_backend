@@ -57,9 +57,8 @@ router.put('/user/:userId',
 
 
 //Routes for pets
-router.post('/pets/:userId',
+router.post('/pets',
     authenticateUser,
-    param('userId').isInt().withMessage('ID no válido').custom(value => value > 0 ).withMessage('ID no válido'),
     body('name').notEmpty().withMessage('El nombre de la mascota es obligatorio'), 
     body('especie').notEmpty().withMessage('La especie de la mascota es obligatorio'), 
     body('raza').notEmpty().withMessage('La raza de la mascota es obligatorio'), 
@@ -101,10 +100,12 @@ router.delete('/pets/:petId',
 
 //Route for citas
 router.get('/citas',
+    authenticateUser,
     CitaController.getCitas
 )
 
-router.get('/citas/:citaId', 
+router.get('/citas/:citaId',
+    authenticateUser, 
     CitaController.getCitaById
 )
 
@@ -134,6 +135,8 @@ router.delete('/citas/:citaId',
 )
 
 router.post('/citas/:citaId',
+    authenticateUser,
+    body('status').isBoolean().withMessage('Valor no valido'),
     CitaController.cancelCita
 )
 

@@ -40,6 +40,11 @@ export class CitaController {
                 res.status(409).json({error : error.message})
                 return
             }
+            if(cita.userId !== req.user.id) {
+                const error = new Error('Acción no válida')
+                res.status(403).json({error : error.message})
+                return
+            }
 
             res.status(201).json(cita)
 
@@ -50,6 +55,17 @@ export class CitaController {
     }
 
     static createCita = async (req: Request, res: Response) => {
+        const citaExist = await Cita.findOne({
+            where : {
+                fecha : req.body.fecha
+            }
+        })
+
+        if(citaExist && citaExist.hora === req.body.hora) {
+            const error = new Error('Hora no disponible')
+            res.status(409).json({error : error.message})
+            return
+        }
         try {
             const { userId, veterinarioId, mascotaId } = req.params;
 
@@ -87,12 +103,35 @@ export class CitaController {
             console.error(error);
             res.status(500).json({ error: 'Hubo un error en el servidor' });
         }
-    }
+    };
+
 
 
     static updateCita = async ( req : Request, res : Response) => {
+
+        const citaExist = await Cita.findOne({
+            where : {
+                fecha : req.body.fecha
+            }
+        })
+
+        if(citaExist && citaExist.hora === req.body.hora) {
+            const error = new Error('Hora no disponible')
+            res.status(409).json({error : error.message})
+            return
+        }
         try {
-            
+            const {citaId} = req.params
+            const cita = await Cita.findByPk(citaId)
+            if(!cita) {
+                const error = new Error('Cita no encontrada')
+                res.status(500).json({error :  error.message})
+                return
+            }
+
+            await cita.update(req.body)
+            res.status(201).json({message : 'Cita actualizada correctamente'})
+
         } catch (error) {
             
         }
@@ -118,7 +157,22 @@ export class CitaController {
     } 
 
     static cancelCita = async (req : Request, res: Response) => {
+        const {citaId} = req.params
 
+        const cita = await Cita.findByPk(citaId)
+        if(!cita || cita.userId !== req.user.id) {
+            const error = new Error('Acción no válida')
+            res.status(500).json({error : error.message})
+            return
+        }
+        if(req.body.status === true) {
+            const error = new Error('Acción no válida')
+            res.status(500).json({error : error.message})
+            return
+        }
+        cita.status = req.body.status
+        await cita.save()
+        res.status(201).json({message : 'Cita cancelada correctamente'})
     }
 
 }

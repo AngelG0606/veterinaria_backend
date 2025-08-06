@@ -9,7 +9,7 @@ export class MascotaController {
         try {
 
             const {userId} = req.params
-            const user = await User.findByPk(userId)
+            const user = await User.findByPk(req.user.id)
             if(!user) {
                 const error = new Error('Usuario no encontrado')
                 res.status(403).json({error :  error.message})
