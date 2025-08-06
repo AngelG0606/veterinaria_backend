@@ -6,6 +6,9 @@ import authRouter from './routes/authRouter'
 import vetRouter from './routes/vetRouter'
 import cors from 'cors'
 import { corsConfig } from './config/cors'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 async function connectDB() {
     try {

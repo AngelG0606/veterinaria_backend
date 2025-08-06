@@ -57,9 +57,8 @@ router.put('/user/:userId',
 
 
 //Routes for pets
-router.post('/pets/:userId',
+router.post('/pets',
     authenticateUser,
-    param('userId').isInt().withMessage('ID no válido').custom(value => value > 0 ).withMessage('ID no válido'),
     body('name').notEmpty().withMessage('El nombre de la mascota es obligatorio'), 
     body('especie').notEmpty().withMessage('La especie de la mascota es obligatorio'), 
     body('raza').notEmpty().withMessage('La raza de la mascota es obligatorio'), 
