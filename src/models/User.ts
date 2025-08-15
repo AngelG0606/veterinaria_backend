@@ -1,4 +1,4 @@
-import { Table, Column, DataType, Model} from 'sequelize-typescript'
+import { Table, Column, DataType, Model, Unique, AllowNull} from 'sequelize-typescript'
 
 
 @Table({
@@ -6,33 +6,42 @@ import { Table, Column, DataType, Model} from 'sequelize-typescript'
 })
 
 class User extends Model {
+
+    @AllowNull(false)
     @Column({
         type : DataType.STRING(100)
     })
     name : string
 
+    @AllowNull(false)
     @Column({
         type : DataType.STRING(100)
     })
     lastname : string
 
+    @AllowNull(false)
+    @Unique
     @Column({
         type : DataType.STRING(50)
     })
     email : string
 
+    @AllowNull(false)
     @Column({
         type : DataType.STRING(100)
     })
     password : string
 
+    @AllowNull(false)
     @Column({
         type : DataType.STRING(20)
     })
     telefono : string
 
+    @AllowNull(false)
     @Column({
-        type : DataType.STRING(20)
+        type : DataType.STRING(20),
+        defaultValue : "cliente"
     })
     rol : string
 }
