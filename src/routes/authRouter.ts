@@ -2,6 +2,7 @@ import {  Router } from 'express'
 import { UserController } from '../controllers/UserController'
 import { body } from 'express-validator'
 import { handleInputErrors } from '../middleware/validation'
+import { authenticate } from '../middleware/authenticate'
 
 
 const router = Router()
@@ -29,6 +30,15 @@ router.post('/login',
     body('password').notEmpty().withMessage('El password no puede ir vacío'),
     handleInputErrors,
     UserController.login
+)
+
+router.put('/update-profile',
+    UserController.updateProfile
+)
+
+router.get('/user',
+    authenticate, 
+    UserController.user
 )
 
 export default router

@@ -3,6 +3,7 @@ import morgan from 'morgan'
 import colors from 'colors'
 import { db } from './config/db'
 import authRouter from './routes/authRouter'
+import petRouter from './routes/petRouter'
 
 async function connectDB () {
     try {
@@ -23,5 +24,6 @@ app.use(morgan('dev'))
 app.use(express.json())
 
 app.use('/api/auth', authRouter)
+app.use('/api/vet', petRouter)
 
 export default app

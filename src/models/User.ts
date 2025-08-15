@@ -1,4 +1,5 @@
-import { Table, Column, DataType, Model, Unique, AllowNull} from 'sequelize-typescript'
+import { Table, Column, DataType, Model, Unique, AllowNull, HasMany } from 'sequelize-typescript'
+import Pet from './Pet'
 
 
 @Table({
@@ -11,39 +12,46 @@ class User extends Model {
     @Column({
         type : DataType.STRING(100)
     })
-    name : string
+    declare name : string
 
     @AllowNull(false)
     @Column({
         type : DataType.STRING(100)
     })
-    lastname : string
+    declare lastname : string
 
     @AllowNull(false)
     @Unique
     @Column({
         type : DataType.STRING(50)
     })
-    email : string
+     declare email : string
 
     @AllowNull(false)
     @Column({
         type : DataType.STRING(100)
     })
-    password : string
+    declare password : string
 
     @AllowNull(false)
     @Column({
         type : DataType.STRING(20)
     })
-    telefono : string
+    declare telefono : string
 
     @AllowNull(false)
     @Column({
         type : DataType.STRING(20),
         defaultValue : "cliente"
     })
-    rol : string
+    declare rol : string
+
+    @HasMany(() => Pet, {
+        onUpdate : 'CASCADE',
+        onDelete : 'CASCADE'
+    })
+    declare pets : Pet[]
+
 }
 
 export default User
