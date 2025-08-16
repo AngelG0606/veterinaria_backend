@@ -60,9 +60,39 @@ export class UserController {
         }
     }
 
+    static changePassword = async(req : Request, res : Response) => {
+        try {
+            
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({error : 'Hubo un error'})
+        }
+    }
 
     static user = async(req : Request, res : Response) => {
         res.json(req.user)
+    }
+
+    static createVet = async (req : Request, res : Response) => {
+        const { email , password}  = req.body
+        const vetExists = await User.findOne({where : {email}})
+        if(vetExists) {
+            const error = new Error('Veterinario ya registrado')
+            res.status(404).json({error : error.message})
+            return
+        }
+
+        try {
+            const user = new User(req.body)
+            user.password = await hashPassword(password)
+            user.rol = "veterinario"
+            await user.save()
+
+            res.send('Cuenta de veterinario creada correctamente');
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: 'Hubo un error' });
+        }
     }
 
 }

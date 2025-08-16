@@ -3,6 +3,7 @@ import { Router } from 'express'
 import { PetController } from '../controllers/PetController'
 import { authenticate } from '../middleware/authenticate'
 import { handleInputErrors } from '../middleware/validation'
+import { CitaController } from '../controllers/CitaController'
 
 const router = Router()
 
@@ -47,6 +48,18 @@ router.delete('/pets/:petId',
     param('petId').isInt().custom(value => value > 0).withMessage('ID No Válido'),
     handleInputErrors,
     PetController.deletePet
+)
+
+
+//Routes for citas
+router.post('/pets/:petId/veterinarios/:veterinarioId/citas',
+    authenticate,
+    param('petId').isInt().custom(value => value > 0).withMessage('ID No Válido'),
+    param('veterinarioId').isInt().custom(value => value > 0).withMessage('ID No Válido'),
+    body('fecha').notEmpty().withMessage('La fecha es obligatoria'),
+    body('hora').notEmpty().withMessage('La hora es obligatoria'),
+    handleInputErrors,
+    CitaController.createCita
 )
 
 
