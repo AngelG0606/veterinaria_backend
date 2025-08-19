@@ -53,7 +53,13 @@ export class UserController {
 
     static updateProfile = async(req : Request, res : Response ) => {
         try {
-            
+            const { userId } = req.params
+            const user = await User.findByPk(userId)
+            if(!user) {
+                const error = new Error('Usuario no encontrado')
+                res.status(401).json({error : error.message})
+                return
+            }
         } catch (error) {
             console.log(error)
             res.status(500).json({error : 'Hubo un error'})
@@ -92,6 +98,62 @@ export class UserController {
         } catch (error) {
             console.log(error);
             res.status(500).json({ error: 'Hubo un error' });
+        }
+    }
+
+    static getVets = async(req: Request, res : Response) => {
+        try {
+            const vets = await User.findAll({
+                where : {
+                    rol : "veterinario"
+                }
+            })
+            res.json(vets)
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({error : 'Hubo un error'})
+        }
+    }
+
+    static getUserById = async (req: Request, res: Response) => {
+        try {
+            const { userId } = req.params
+            const user = await User.findByPk(userId)
+            if(!user) {
+                const error = new Error('Usuario no encontrado')
+                res.status(401).json({error : error.message})
+                return
+            }
+            res.json(user)
+        } catch (error) {
+             console.log(error)
+            res.status(500).json({error : 'Hubo un error'})
+        }
+    }
+
+    static editVet = async(req : Request, res : Response) => {
+        try {
+            
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({error : 'Hubo un error'})
+        }
+    }
+
+    static deleteVet = async(req : Request, res : Response) => {
+        try {
+            const { vetId } = req.params
+            const vet = await User.findByPk(vetId)
+            if(!vet || vet.rol !== "veterinario") {
+                const error = new Error('Veterinario no encontrado')
+                res.status(403).json({error : error.message})
+                return
+            }
+            await vet.destroy()
+            res.send('Veterinario Eliminado Correctamente')
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({error : 'Hubo un error'})
         }
     }
 
