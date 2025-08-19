@@ -62,6 +62,12 @@ router.post('/pets/:petId/veterinarios/:veterinarioId/citas',
     CitaController.createCita
 )
 
+router.post('/citas/:citaId',
+    param('citaId').isInt().custom(value => value > 0).withMessage('ID No Válido'),
+    handleInputErrors,
+    CitaController.accepCita
+)
+
 
 export default router
 
